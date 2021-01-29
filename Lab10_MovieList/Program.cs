@@ -40,6 +40,17 @@ namespace Lab10_MovieList
             Movie.Add(new Movie("Godzilla", "SciFi"));
 
             Movie.Sort((x, y) => x.title.CompareTo(y.title));
+
+            List<string> genre = new List<string>();
+
+            foreach (Movie m in Movie)
+            {
+                if(!genre.Contains(m.category))
+                {
+                    genre.Add(m.category);
+                   
+                }
+            }
             
 
             Console.WriteLine("Welcome to the Movie List Application");
@@ -47,58 +58,32 @@ namespace Lab10_MovieList
             while (running == true)
             {
                
-                Console.WriteLine("Which category are you interested in? (1-4)");
-                Console.WriteLine("1) Animated");
-                Console.WriteLine("2) Drama");
-                Console.WriteLine("3) Horror");
-                Console.WriteLine("4) SciFi");
+                Console.WriteLine($"Which category are you interested in? (1-{genre.Count()})");
+                int i = 1;
+
+                foreach (string g in genre)
+                {
+                    Console.WriteLine($"{i}) {g}");
+                    i++;
+                }
+                //Console.WriteLine("1) Animated");
+                //Console.WriteLine("2) Drama");
+                //Console.WriteLine("3) Horror");
+                //Console.WriteLine("4) SciFi");
 
                 
 
-                int userChoice = WhichCategoryValidation();
+                int userChoice = WhichCategoryValidation(genre);
                 Console.WriteLine("Here are some movies you might be interested in:");
-                if (userChoice == 1)
-                {
-
-                    foreach (Movie m in Movie)
+                foreach (Movie m in Movie)
                     {
                         
-                        if (m.category == "Animated")
+                        if (m.category == genre[userChoice-1])
                         {
                             Console.WriteLine(m.title);
                         }
                     }
-                }
-                else if (userChoice == 2)
-                {
-                    foreach (Movie m in Movie)
-                    {
-                        if (m.category == "Drama")
-                        {
-                            Console.WriteLine(m.title);
-                        }
-                    }
-                }
-                else if (userChoice == 3)
-                {
-                    foreach (Movie m in Movie)
-                    {
-                        if (m.category == "Horror")
-                        {
-                            Console.WriteLine(m.title);
-                        }
-                    }
-                }
-                else if (userChoice == 4)
-                {
-                    foreach (Movie m in Movie)
-                    {
-                        if (m.category == "SciFi")
-                        {
-                            Console.WriteLine(m.title);
-                        }
-                    }
-                }
+                
                 bool validAnswer = false;
                 //ask if they want to know about another student
                 while (validAnswer == false)
@@ -134,14 +119,14 @@ namespace Lab10_MovieList
             }
 
         }
-        public static int WhichCategoryValidation()
+        public static int WhichCategoryValidation(List<string> genre)
         {
             while (true)
             {
                 string userInput = Console.ReadLine();
                 int categoryNumber;
                 bool inputIsNumber = int.TryParse(userInput, out categoryNumber);
-                bool inputGreaterThanCategories = categoryNumber > 4 || categoryNumber < 1;
+                bool inputGreaterThanCategories = categoryNumber > genre.Count() || categoryNumber < 1;
 
                 try
                 {
@@ -164,11 +149,14 @@ namespace Lab10_MovieList
                 {
                     Console.WriteLine(e.Message);
                     Console.WriteLine($"Lets's try again");
-                    Console.WriteLine("Which category are you interested in? (1-4)");
-                    Console.WriteLine("1) Animated");
-                    Console.WriteLine("2) Drama");
-                    Console.WriteLine("3) Horror");
-                    Console.WriteLine("4) SciFi");
+                    Console.WriteLine($"Which category are you interested in? (1-{genre.Count()})");
+                    int i = 1;
+
+                    foreach (string g in genre)
+                    {
+                        Console.WriteLine($"{i}) {g}");
+                        i++;
+                    }
                     continue;
                 }
 
